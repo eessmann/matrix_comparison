@@ -8,9 +8,10 @@
 #include "TNT/tnt.h"
 #include "JAMA/jama_eig.h"
 
-#include "Eigen/Eigenvalues"
+#include <Eigen/Eigenvalues>
 
-#include "../Eigen/Eigen/Dense" 
+#include <Eigen/Dense>
+
 typedef Eigen::Matrix<float, 10, 10, Eigen::RowMajor> MagCalM10x10; 
 typedef Eigen::Matrix<float, 6, 4, Eigen::RowMajor> MagCalM6x4; 
 typedef Eigen::Matrix<float, 4, 4, Eigen::RowMajor> MagCalM4x4; 
