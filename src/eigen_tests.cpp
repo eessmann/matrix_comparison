@@ -1,7 +1,6 @@
 //
 // Created by erich on 09/04/2021.
 //
-#define EIGEN_USE_BLAS
 #include <chrono>
 #include <Eigen/Eigenvalues>
 

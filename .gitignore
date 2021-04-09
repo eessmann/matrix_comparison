@@ -251,6 +251,7 @@ Sessionx.vim
 # Temporary
 .netrwhist
 *~
+*.sqlite
 # Auto-generated tag files
 tags
 # Persistent undo

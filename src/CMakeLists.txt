@@ -8,6 +8,7 @@ target_link_libraries(matrix_test
         PRIVATE project_options project_warnings)
 
 target_link_libraries(matrix_test PRIVATE fmt::fmt)
+target_link_libraries(matrix_test PRIVATE spdlog::spdlog spdlog::spdlog_header_only)
 target_include_directories(matrix_test PRIVATE ${PCG_INCLUDE_DIRS})
 target_link_libraries(matrix_test PRIVATE LAPACK::LAPACK)
 target_link_libraries(matrix_test PRIVATE Eigen3::Eigen)

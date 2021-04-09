@@ -47,6 +47,7 @@ option(ENABLE_FUZZING "Enable Fuzzing Builds" OFF)
 
 # Set up dependencies
 find_package(fmt CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
 find_package(LAPACK CONFIG REQUIRED)
 find_package(blaze CONFIG REQUIRED)
 find_package(GSL REQUIRED)

@@ -10,9 +10,9 @@
 
 
 // Max Matrix Size
-constexpr size_t max_size = 64;
+constexpr size_t max_size = 256;
 
-// Min Matrix Sixe
+// Min Matrix Size
 constexpr size_t min_size = 2;
 
 // Compile time matrix size array
