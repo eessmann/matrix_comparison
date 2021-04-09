@@ -20,7 +20,7 @@ $RECYCLE.BIN/
 *.msix
 *.msm
 *.msp
-
+*.pdf
 # Windows shortcuts
 *.lnk
 
