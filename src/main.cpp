@@ -212,7 +212,7 @@ int main() {
     FILE *symm_fp = fopen("csv_symm_results.csv", "w");
     printf("size,\tEigen,\tBlaze,\tGSL\n");
     fprintf(symm_fp, "size,\tEigen,\tTNT,\tGSL\n");
-    for (int size = 5; size < 200; size += 1) {
+    for (int size = 2; size < 256; size += 1) {
         double blaze_time = run_Blaze_symm(size, 0.4);
         double eigen_time = run_Eigen_symm(size, 0.4);
         double gsl_time = run_GSL_symm(size, 0.4);
@@ -224,7 +224,7 @@ int main() {
     FILE *asymm_fp = fopen("csv_asymm_results.csv", "w");
     printf("size,\tEigen,\tBlaze,\tGSL\n");
     fprintf(asymm_fp, "size,\tEigen,\tBlaze,\tGSL\n");
-    for (int size = 5; size < 200; size += 1) {
+    for (int size = 2; size < 256; size += 1) {
         double blaze_time = run_Blaze_asymm(size);
         double eigen_time = run_Eigen_asymm(size);
         double gsl_time = run_GSL_asymm(size);

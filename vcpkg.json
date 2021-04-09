@@ -3,7 +3,9 @@
   "version-string": "0.1.0-dev",
   "description": "A short C++ program to compare the performance of GSL, TNT and Eigen, and a python script to plot it.",
   "dependencies": [
+    "armadillo",
     "blaze",
+    "catch2",
     "eigen3",
     "gsl",
     "pcg"
