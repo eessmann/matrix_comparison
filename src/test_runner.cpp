@@ -8,6 +8,7 @@
 #include <fmt/ranges.h>
 #include <fmt/ostream.h>
 #include <tuple>
+#include <type_traits>
 #include <ranges>
 #include <spdlog/spdlog.h>
 
@@ -21,14 +22,22 @@
 
 namespace ranges = std::ranges;
 
-template<typename Lambda>
-void run_bench(Lambda ben, std::filesystem::path &filename) {
-    spdlog::info("size, Eigen, Blaze, GSL, Xtensor");
-    std::vector<std::tuple<size_t, double, double, double, double>> results(size_table.size());
-    ranges::transform(size_table.begin(), size_table.end(), results.begin(), ben);
+const auto header = fmt::format("size, Eigen, Blaze, GSL, Xtensor");
+
+template<typename F>
+concept Function = requires(F) {
+    std::is_function_v<F>;
+};
+
+template<Function Bench>
+void run_bench(Bench bench, std::filesystem::path &filename) {
+    using TResult = std::invoke_result_t<Bench, size_t>;
+    spdlog::info("{}", header);
+    std::vector<TResult> results(size_table.size());
+    ranges::transform(size_table.begin(), size_table.end(), results.begin(), bench);
 
     std::ofstream times(filename);
-    fmt::print(times, "size, Eigen, Blaze, GSL, Xtensor\n");
+    fmt::print(times, "{}\n", header);
     for (auto r : results) {
         fmt::print(times, "{}\n", fmt::join(r, ", "));
     }

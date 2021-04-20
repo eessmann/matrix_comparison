@@ -4,7 +4,6 @@
 #include <complex>
 #include <chrono>
 #include <random>
-#include "pcg_random.hpp"
 #include <blaze/Blaze.h>
 
 #include "blaze_tests.hpp"
@@ -32,7 +31,7 @@ double run_Blaze_asymm(const size_t size) {
     // First create an instance of an engine.
     std::random_device rnd_device;
     // Specify the engine and distribution.
-    pcg64 engine(static_cast<__uint128_t>(random()));
+    std::mt19937_64 engine(rnd_device());
     std::uniform_real_distribution<double> dist(-1, 1);
 
     auto gen = [&dist, &engine](...) {

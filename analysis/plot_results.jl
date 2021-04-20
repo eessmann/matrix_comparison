@@ -9,7 +9,7 @@ db = SQLite.DB("analysis/data.sqlite")
 
 sym_data =
     CSV.File(
-        "cmake-build-release-llvm/src/csv_symm_results_2021-04-09-22-33-51.csv",
+        "cmake-build-release-aocc/src/csv_symm_results_2021-04-15-15-16-44.csv",
         normalizenames = true,
     ) |> DataFrame
 
@@ -28,7 +28,7 @@ savefig(plt1, "symm_results.pdf")
 
 asym_data =
     CSV.File(
-        "cmake-build-release-llvm/src/csv_asymm_results_2021-04-09-22-39-47.csv",
+        "cmake-build-release-aocc/src/csv_asymm_results_2021-04-15-15-22-21.csv",
         normalizenames = true,
     ) |> DataFrame
 

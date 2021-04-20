@@ -52,7 +52,6 @@ find_package(LAPACK CONFIG REQUIRED)
 find_package(blaze CONFIG REQUIRED)
 find_package(GSL REQUIRED)
 find_package(Eigen3 CONFIG REQUIRED)
-find_path(PCG_INCLUDE_DIRS "pcg_extras.hpp")
 find_package(xtensor CONFIG REQUIRED)
 find_package(xtensor-blas CONFIG REQUIRED)
 

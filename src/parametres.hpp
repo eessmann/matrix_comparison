@@ -6,6 +6,7 @@
 #define MATRIX_COMPARISON_PARAMETRES_HPP
 #include <array>
 #include <chrono>
+#include <functional>
 #include <numeric>
 
 
@@ -18,7 +19,8 @@ constexpr size_t min_size = 2;
 // Compile time matrix size array
 template <size_t SIZE>
 constexpr auto table_gen() {
-    std::array<size_t, SIZE-2> temp;
+    namespace ranges = std::ranges;
+    std::array<size_t, SIZE-2> temp{};
     std::iota(temp.begin(), temp.end(), min_size);
     return temp;
 }
