@@ -6,7 +6,7 @@ add_library(eigen_runner
 target_link_libraries(eigen_runner
         PRIVATE matrix_comparison::project_options matrix_comparison::project_warnings)
 target_link_libraries(eigen_runner
-        PRIVATE BLAS::BLAS)
+        PRIVATE BLAS::BLAS LAPACK::LAPACK)
 target_link_libraries(eigen_runner
         PRIVATE Eigen3::Eigen)
 target_link_libraries(eigen_runner

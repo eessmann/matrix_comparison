@@ -6,7 +6,7 @@ add_library(blaze_runner
 target_link_libraries(blaze_runner
         PRIVATE matrix_comparison::project_options matrix_comparison::project_warnings)
 target_link_libraries(blaze_runner
-        PRIVATE BLAS::BLAS)
+        PRIVATE BLAS::BLAS LAPACK::LAPACK)
 target_link_libraries(blaze_runner
         PRIVATE blaze::blaze)
 target_link_libraries(blaze_runner

@@ -59,6 +59,9 @@ double run_GSL_asymm(const size_t size) {
     // Test Cycle
     for (size_t j = 0; j < mp::num_iter; j++) {
         std::generate(data.begin(), data.end(), gen);
+        for (size_t i = 0; i < size; i++) {
+            data[i + i * size] += 1;
+        }
         gsl_matrix_view gsl_pei = gsl_matrix_view_array(data.data(), size, size);
 
         auto start = std::chrono::steady_clock::now();

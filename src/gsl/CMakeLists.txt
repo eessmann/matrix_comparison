@@ -6,6 +6,8 @@ add_library(gsl_runner
 target_link_libraries(gsl_runner
         PRIVATE matrix_comparison::project_options matrix_comparison::project_warnings)
 target_link_libraries(gsl_runner
+        PRIVATE BLAS::BLAS LAPACK::LAPACK)
+target_link_libraries(gsl_runner
         PRIVATE GSL::gsl GSL::gslcblas)
 target_link_libraries(gsl_runner
         PRIVATE pcg-cpp::pcg-cpp)

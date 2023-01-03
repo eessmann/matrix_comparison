@@ -128,6 +128,10 @@ add_subdirectory(configured_files)
 ########################################################################################################################
 ########################################################################################################################
 
+# Find BLAS and lapack
+find_package(BLAS REQUIRED)
+find_package(LAPACK REQUIRED)
+
 # Find dependencies:
 set(DEPENDENCIES_CONFIGURED
         armadillo
@@ -146,8 +150,6 @@ foreach (DEPENDENCY ${DEPENDENCIES_CONFIGURED})
     find_package(${DEPENDENCY} CONFIG REQUIRED)
 endforeach ()
 
-# Find BLAS
-find_package(BLAS REQUIRED)
 
 # Adding the src:
 add_subdirectory(src)
