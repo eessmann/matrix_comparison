@@ -4,11 +4,13 @@
 #include <vector>
 #include <chrono>
 #include <random>
-
-#include "parametres.hpp"
-
 #include <gsl/gsl_eigen.h>
+#include <pcg_random.hpp>
+
+#include "parameters.hpp"
 #include "gsl_tests.hpp"
+
+namespace mp = matrix_comparison::parameters;
 
 double run_GSL_symm(const size_t size, const double alpha) {
 
@@ -26,23 +28,24 @@ double run_GSL_symm(const size_t size, const double alpha) {
     gsl_eigen_symmv_workspace *wspace = gsl_eigen_symmv_alloc(size);
 
     // Test Cycle
-    for (size_t j = 0; j < num_iter; j++) {
+    for (size_t j = 0; j < mp::num_iter; j++) {
         auto start = std::chrono::steady_clock::now();
         gsl_eigen_symmv(&gsl_pei.matrix, eval, evec, wspace);
-        avg_sum += std::chrono::duration_cast<microsecond_d>(
+        avg_sum += std::chrono::duration_cast<mp::microsecond_d>(
                 std::chrono::steady_clock::now() - start).count();
     }
+    gsl_vector_free(eval);
+    gsl_matrix_free(evec);
     gsl_eigen_symmv_free(wspace);
-    return avg_sum / num_iter;
+    return avg_sum / mp::num_iter;
 }
 
 double run_GSL_asymm(const size_t size) {
-    // First create an instance of an engine.
-    std::random_device rnd_device;
     // Specify the engine and distribution.
-    std::mt19937_64 engine(rnd_device());
+    pcg64 engine{pcg_extras::seed_seq_from<std::random_device>{}};
     std::uniform_real_distribution<double> dist(-1, 1);
-    auto gen = [&dist, &engine]() {
+
+    auto gen = [&dist, &engine](...) {
         return dist(engine);
     };
 
@@ -54,15 +57,17 @@ double run_GSL_asymm(const size_t size) {
     gsl_eigen_nonsymmv_workspace *wspace = gsl_eigen_nonsymmv_alloc(size);
 
     // Test Cycle
-    for (size_t j = 0; j < num_iter; j++) {
+    for (size_t j = 0; j < mp::num_iter; j++) {
         std::generate(data.begin(), data.end(), gen);
         gsl_matrix_view gsl_pei = gsl_matrix_view_array(data.data(), size, size);
 
         auto start = std::chrono::steady_clock::now();
         gsl_eigen_nonsymmv(&gsl_pei.matrix, eval, evec, wspace);
-        avg_sum += std::chrono::duration_cast<microsecond_d>(
+        avg_sum += std::chrono::duration_cast<mp::microsecond_d>(
                 std::chrono::steady_clock::now() - start).count();
     }
+    gsl_vector_complex_free(eval);
+    gsl_matrix_complex_free(evec);
     gsl_eigen_nonsymmv_free(wspace);
-    return avg_sum / num_iter;
+    return avg_sum / mp::num_iter;
 }

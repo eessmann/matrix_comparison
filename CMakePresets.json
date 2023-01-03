@@ -1,0 +1,51 @@
+{
+  "version": 2,
+
+  "configurePresets": [
+    {
+      "name": "base",
+      "displayName": "Ninja Base",
+      "description": "Build using Ninja generator",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/cmake-build-${presetName}"
+    },
+    {
+      "name": "debug",
+      "inherits": "base",
+      "displayName": "Ninja Debug",
+      "description": "Debug Build using Ninja generator",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      },
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "LLVM"
+        }
+      }
+    },
+    {
+      "name": "release",
+      "inherits": "base",
+      "displayName": "Ninja Release",
+      "description": "Release Build using Ninja generator",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      },
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "LLVM"
+        }
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "release",
+      "configurePreset": "release"
+    },
+    {
+      "name": "debug",
+      "configurePreset": "debug"
+    }
+  ]
+}

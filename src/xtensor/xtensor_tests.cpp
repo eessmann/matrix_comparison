@@ -6,7 +6,7 @@
 #include <xtensor-blas/xlinalg.hpp>
 #include <xtensor/xrandom.hpp>
 
-#include "parametres.hpp"
+#include "../parameters/parameters.hpp"
 #include "xtensor_tests.hpp"
 
 double run_Xtensor_symm(const size_t m_size, const double alpha) {

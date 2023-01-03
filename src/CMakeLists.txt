@@ -1,16 +1,29 @@
-# matrix_test Source files
-set(matrix_test_sources
-        main.cpp blaze_tests.cpp blaze_tests.hpp parametres.hpp eigen_tests.cpp eigen_tests.hpp gsl_tests.cpp gsl_tests.hpp test_runner.cpp test_runner.hpp xtensor_tests.cpp xtensor_tests.hpp)
+# parameters
+add_subdirectory(parameters)
 
-# BioFM executable Target
-add_executable(matrix_test ${matrix_test_sources})
+# matrix libraries
+add_subdirectory(arma)
+add_subdirectory(blaze)
+add_subdirectory(eigen)
+add_subdirectory(gsl)
+add_subdirectory(xtensor)
+
+# matrix test runner
+add_library(matrix_test_runner
+    test_runner.cpp
+    test_runner.hpp
+    )
+target_link_libraries(matrix_test_runner
+        PRIVATE matrix_comparison::project_options matrix_comparison::project_warnings)
+target_link_libraries(matrix_test_runner PRIVATE fmt::fmt)
+target_link_libraries(matrix_test_runner PRIVATE spdlog::spdlog)
+target_link_libraries(matrix_test_runner PRIVATE parameters)
+target_link_libraries(matrix_test_runner PRIVATE blaze_runner)
+target_link_libraries(matrix_test_runner PRIVATE eigen_runner)
+target_link_libraries(matrix_test_runner PRIVATE gsl_runner)
+
+# matrix_test executable Target
+add_executable(matrix_test main.cpp)
 target_link_libraries(matrix_test
-        PRIVATE project_options project_warnings)
-
-target_link_libraries(matrix_test PRIVATE fmt::fmt)
-target_link_libraries(matrix_test PRIVATE spdlog::spdlog spdlog::spdlog_header_only)
-target_link_libraries(matrix_test PRIVATE LAPACK::LAPACK)
-target_link_libraries(matrix_test PRIVATE Eigen3::Eigen)
-target_link_libraries(matrix_test PRIVATE GSL::gsl GSL::gslcblas)
-target_link_libraries(matrix_test PRIVATE blaze::blaze)
-target_link_libraries(matrix_test PRIVATE xtensor xtensor-blas)
+        PRIVATE matrix_comparison::project_options matrix_comparison::project_warnings)
+target_link_libraries(matrix_test PRIVATE matrix_test_runner)
