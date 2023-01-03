@@ -16,8 +16,11 @@ class MatrixComparision(ConanFile):
                 , "spdlog/1.11.0"
                 , "gsl/2.7"
                 , "pcg-cpp/cci.20210406"
+                , "range-v3/0.12.0"
                 , "xtensor/0.24.2")
     default_options = {
+        "armadillo/*:use_blas": "framework_accelerate",
+        "armadillo/*:use_lapack": "framework_accelerate",
     }
 
 

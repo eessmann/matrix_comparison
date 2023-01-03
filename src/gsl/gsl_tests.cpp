@@ -6,6 +6,7 @@
 #include <random>
 #include <gsl/gsl_eigen.h>
 #include <pcg_random.hpp>
+#include <range/v3/algorithm/generate.hpp>
 
 #include "parameters.hpp"
 #include "gsl_tests.hpp"
@@ -42,10 +43,10 @@ double run_GSL_symm(const size_t size, const double alpha) {
 
 double run_GSL_asymm(const size_t size) {
     // Specify the engine and distribution.
-    pcg64 engine{pcg_extras::seed_seq_from<std::random_device>{}};
+    static thread_local pcg64 engine{pcg_extras::seed_seq_from<std::random_device>{}};
     std::uniform_real_distribution<double> dist(-1, 1);
 
-    auto gen = [&dist, &engine](...) {
+    auto gen = [&dist]() {
         return dist(engine);
     };
 
@@ -58,7 +59,7 @@ double run_GSL_asymm(const size_t size) {
 
     // Test Cycle
     for (size_t j = 0; j < mp::num_iter; j++) {
-        std::generate(data.begin(), data.end(), gen);
+        ranges::generate(data, gen);
         for (size_t i = 0; i < size; i++) {
             data[i + i * size] += 1;
         }

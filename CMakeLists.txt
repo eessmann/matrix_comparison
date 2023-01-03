@@ -143,6 +143,7 @@ set(DEPENDENCIES_CONFIGURED
         fmt
         pcg-cpp
         spdlog
+        range-v3
         xtensor
         )
 

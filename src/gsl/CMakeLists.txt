@@ -13,3 +13,5 @@ target_link_libraries(gsl_runner
         PRIVATE pcg-cpp::pcg-cpp)
 target_link_libraries(gsl_runner
         PRIVATE parameters)
+target_link_libraries(gsl_runner
+        PRIVATE range-v3::range-v3)

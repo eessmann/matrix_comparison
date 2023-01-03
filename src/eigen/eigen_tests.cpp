@@ -34,10 +34,10 @@ double run_Eigen_symm(const size_t m_size, const double alpha) {
 
 double run_Eigen_asymm(const size_t m_size) {
     // Specify the engine and distribution.
-    pcg64 engine{pcg_extras::seed_seq_from<std::random_device>{}};
+    static thread_local pcg64 engine{pcg_extras::seed_seq_from<std::random_device>{}};
     std::uniform_real_distribution<double> dist(-1, 1);
 
-    auto gen = [&dist, &engine]() {
+    auto gen = [&dist]() {
         return dist(engine);
     };
 

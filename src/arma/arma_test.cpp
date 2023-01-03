@@ -1,53 +1,50 @@
 //
-// Created by erich on 09/04/2021.
+// Created by Erich Essmann on 03/01/2023.
 //
-#include <complex>
+#include <armadillo>
 #include <chrono>
 #include <random>
-#include <blaze/Blaze.h>
 #include <pcg_random.hpp>
 
-#include "blaze_tests.hpp"
+#include "arma_test.hpp"
 #include "parameters.hpp"
 
 namespace mp = matrix_comparison::parameters;
 
-double run_Blaze_symm(const size_t size, const double alpha) {
-    blaze::SymmetricMatrix<blaze::DynamicMatrix<double>> const blaze_pei =
-            blaze::uniform(size, size, 1.0) + blaze::IdentityMatrix<double>(size) * alpha;
+double run_Arma_symm(const size_t size, const double alpha) {
+    arma::mat const arma_pei = alpha * arma::eye(size, size) + arma::ones(size, size);
     double avg_sum = 0.0;
 
-    // Test Cycle
+    // Test Loop
     for (size_t j = 0; j < mp::num_iter; j++) {
+        arma::vec w(size);
+        arma::mat V(size, size);
         auto start = std::chrono::steady_clock::now();
-        blaze::DynamicVector<double, blaze::columnVector> w(size);
-        blaze::DynamicMatrix<std::complex<double>, blaze::rowMajor> V(size, size);
-        blaze::eigen(blaze_pei, w, V);
+        arma::eig_sym(w, V, arma_pei);
         avg_sum += std::chrono::duration_cast<mp::microsecond_d>(
                 std::chrono::steady_clock::now() - start).count();
     }
-
     return avg_sum / mp::num_iter;
 }
 
-double run_Blaze_asymm(const size_t size) {
+double run_Arma_asymm(const size_t size) {
     // Specify the engine and distribution.
     static thread_local pcg64 engine{pcg_extras::seed_seq_from<std::random_device>{}};
     std::uniform_real_distribution<double> dist(-1, 1);
 
-    auto gen = [&dist](auto, auto) {
+    auto gen = [&dist](auto) {
         return dist(engine);
     };
     double avg_sum = 0.0;
 
     // Test Cycle
     for (size_t j = 0; j < mp::num_iter; j++) {
-        auto const mat = blaze::generate(size, size, gen) + blaze::IdentityMatrix<double>(size);
-        blaze::DynamicVector<std::complex<double>, blaze::columnVector> w(size);
-        blaze::DynamicMatrix<std::complex<double>, blaze::rowMajor> V(size, size);
+        arma::mat const mat = arma::mat(size, size).transform(gen) + arma::eye(size, size);
+        arma::cx_vec w(size);
+        arma::cx_mat V(size, size);
 
         auto start = std::chrono::steady_clock::now();
-        blaze::eigen(mat, w, V);
+        arma::eig_gen(w, V, mat);
         avg_sum += std::chrono::duration_cast<mp::microsecond_d>(
                 std::chrono::steady_clock::now() - start).count();
     }
