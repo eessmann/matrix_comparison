@@ -2,9 +2,10 @@
 #include "test_runner.hpp"
 
 int main() {
-    symmetric_eigen_bench();
-    asymmetric_eigen_bench();
+  symmetric_inverse_bench();
+  asymmetric_inverse_bench();
 
-    return 0;
+  symmetric_eigen_bench();
+  asymmetric_eigen_bench();
+  return 0;
 }
-

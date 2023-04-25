@@ -1,3 +1,5 @@
+module MatrixComparison
+
 #=
 plot_results:
 - Julia version:
@@ -12,26 +14,22 @@ function generate_plots(fp,pl_title, plot_name)
         normalizenames = true,
     ) |> DataFrame
 
-    labels = ["Eigen" "Blaze" "GSL" "xtensor"]
+    labels = names(sym_data[!, Not(:size)])
     plt = plot(
         sym_data.size,
-        [sym_data.Eigen sym_data.Blaze sym_data.GSL sym_data.Xtensor],
+        Matrix(sym_data[!, Not(:size)]),
         plot_title = pl_title,
         xlabel = "Matrix size, N",
+        xaxis = :log10,
         ylabel = "Time elasped, μs",
         yaxis = :log10,
-        label = labels,
+        label = permutedims(labels),
         legend = :topleft)
     savefig(plt, plot_name)
     
 end
 
-function run_Julia_sym(fp)
-    sym_data = CSV.File(
-        fp,
-        normalizenames = true,
-    ) |> DataFrame
-
+function run_Julia_sym()
     function sym_invert(n::Int, alpha::Float64)
         julia_pie = ones(n, n) + alpha * I
         function inner_loop(mat::Matrix)
@@ -58,6 +56,8 @@ end
 
 function main(alpha::Float64)
 
-    run_Julia_sym("cmake-build-release/src/csv_symm_results_2022-02-10-11-57-03.csv")
+    generate_plots("../cmake-build-release/src/csv_symm_inv_results_2023-04-20-16-57-40.csv")
     
 end
+
+end # module MatrixComparison

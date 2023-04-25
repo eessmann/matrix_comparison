@@ -6,8 +6,13 @@
 #define MATRIX_COMPARISON_ARMA_TEST_H
 #include <cstdlib>
 
-double run_Arma_symm(const size_t size, const double alpha);
-double run_Arma_asymm(const size_t size);
+namespace arma_bench {
 
+double run_symm(const size_t size, double const alpha);
+double run_asymm(const size_t size);
 
-#endif //MATRIX_COMPARISON_ARMA_TEST_H
+double run_inv_symm(const size_t size, double const alpha);
+double run_inv_asymm(const size_t size);
+
+}  // namespace arma_bench
+#endif  // MATRIX_COMPARISON_ARMA_TEST_H

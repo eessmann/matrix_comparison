@@ -25,7 +25,7 @@ set(OPT_WARNINGS_AS_ERRORS_DEVELOPER_DEFAULT FALSE)
 # https://github.com/cpp-best-practices/project_options
 message(STATUS "Fetching cmake project options...")
 FetchContent_Declare(_project_options
-        GIT_REPOSITORY https://github.com/cpp-best-practices/project_options
+        GIT_REPOSITORY https://github.com/aminya/project_options
         GIT_TAG origin/main
         GIT_SHALLOW TRUE
         GIT_PROGRESS TRUE)
@@ -92,7 +92,7 @@ project_options(
         ENABLE_CONAN
         ENABLE_INTERPROCEDURAL_OPTIMIZATION
         ENABLE_NATIVE_OPTIMIZATION
-        # ENABLE_DOXYGEN
+        ENABLE_DOXYGEN
         # ENABLE_COVERAGE
         # ENABLE_SANITIZER_ADDRESS
         # ENABLE_SANITIZER_LEAK
@@ -103,7 +103,7 @@ project_options(
         # PCH_HEADERS <vector> <string>
         # WARNINGS_AS_ERRORS
         # ENABLE_INCLUDE_WHAT_YOU_USE
-        # ENABLE_USER_LINKER
+        LINKER "lld"
         # ENABLE_BUILD_WITH_TIME_TRACE
         # CONAN_OPTIONS
 )
@@ -116,6 +116,7 @@ execute_process(
         OUTPUT_VARIABLE GIT_HASH
         OUTPUT_STRIP_TRAILING_WHITESPACE
 )
+cmake_print_variables(GIT_HASH)
 
 target_compile_features(project_options INTERFACE cxx_std_${CMAKE_CXX_STANDARD})
 # TODO: The INTERFACE library NAMESPACE ALIAS are missing! CK

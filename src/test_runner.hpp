@@ -9,3 +9,6 @@
 
 void symmetric_eigen_bench();
 void asymmetric_eigen_bench();
+
+void symmetric_inverse_bench();
+void asymmetric_inverse_bench();

@@ -1,0 +1,13 @@
+name = "MatrixComparison"
+uuid = "54ef765d-53a2-4e28-9df1-d820ca389a95"
+authors = ["Erich Essmann <essmanne@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+PGFPlotsX = "8314cec4-20b6-5062-9cdb-752b83310925"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+SQLite = "0aa819cd-b072-5ff4-a722-6bc24af294d9"
