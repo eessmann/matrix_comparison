@@ -21,10 +21,10 @@ double run_symm(const size_t size, double const alpha) {
   for (size_t j = 0; j < mp::num_iter; j++) {
     arma::vec w(size);
     arma::mat V(size, size);
-    auto start = std::chrono::steady_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
     arma::eig_sym(w, V, arma_pei);
     avg_sum += std::chrono::duration_cast<mp::microsecond_d>(
-                   std::chrono::steady_clock::now() - start)
+                   std::chrono::high_resolution_clock::now() - start)
                    .count();
   }
   return avg_sum / mp::num_iter;
@@ -37,10 +37,10 @@ double run_inv_symm(const size_t size, double const alpha) {
 
   // Test Loop
   for (size_t j = 0; j < mp::num_iter; j++) {
-    auto start = std::chrono::steady_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
     volatile arma::mat arma_pei_inv = arma::inv(arma_pei);
     avg_sum += std::chrono::duration_cast<mp::microsecond_d>(
-                   std::chrono::steady_clock::now() - start)
+                   std::chrono::high_resolution_clock::now() - start)
                    .count();
   }
   return avg_sum / mp::num_iter;
@@ -48,11 +48,11 @@ double run_inv_symm(const size_t size, double const alpha) {
 
 double run_asymm(const size_t size) {
   // Specify the engine and distribution.
-  static thread_local pcg64 engine{
+  pcg64 engine{
       pcg_extras::seed_seq_from<std::random_device>{}};
   std::uniform_real_distribution<double> dist(-1, 1);
 
-  auto gen = [&dist](auto) { return dist(engine); };
+  auto gen = [&dist, &engine](auto) -> double { return dist(engine); };
   double avg_sum = 0.0;
 
   // Test Cycle
@@ -62,10 +62,10 @@ double run_asymm(const size_t size) {
     arma::cx_vec w(size);
     arma::cx_mat V(size, size);
 
-    auto start = std::chrono::steady_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
     arma::eig_gen(w, V, mat);
     avg_sum += std::chrono::duration_cast<mp::microsecond_d>(
-                   std::chrono::steady_clock::now() - start)
+                   std::chrono::high_resolution_clock::now() - start)
                    .count();
   }
 
@@ -74,11 +74,11 @@ double run_asymm(const size_t size) {
 
 double run_inv_asymm(const size_t size) {
   // Specify the engine and distribution.
-  static thread_local pcg64 engine{
+  pcg64 engine{
       pcg_extras::seed_seq_from<std::random_device>{}};
   std::uniform_real_distribution<double> dist(-1, 1);
 
-  auto gen = [&dist](auto) { return dist(engine); };
+  auto gen = [&dist, &engine](auto) { return dist(engine); };
   double avg_sum = 0.0;
 
   // Test Cycle
@@ -86,10 +86,10 @@ double run_inv_asymm(const size_t size) {
     arma::mat const mat =
         arma::mat(size, size).transform(gen) + arma::eye(size, size);
 
-    auto start = std::chrono::steady_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
     volatile arma::mat mat_inv = arma::inv(mat);
     avg_sum += std::chrono::duration_cast<mp::microsecond_d>(
-                   std::chrono::steady_clock::now() - start)
+                   std::chrono::high_resolution_clock::now() - start)
                    .count();
   }
 

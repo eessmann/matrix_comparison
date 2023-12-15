@@ -21,11 +21,22 @@ set(ENABLE_DEVELOPER_MODE TRUE CACHE BOOL "Enable 'developer mode'")
 # Change this to false if you want to disable warnings_as_errors in developer mode
 set(OPT_WARNINGS_AS_ERRORS_DEVELOPER_DEFAULT FALSE)
 
+# Add cmake conan integration
+# https://github.com/cpp-best-practices/project_options
+message(STATUS "Fetching cmake conan integration...")
+FetchContent_Declare(_cmake_conan
+        GIT_REPOSITORY https://github.com/conan-io/cmake-conan.git
+        GIT_TAG origin/develop2
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE)
+FetchContent_MakeAvailable(_cmake_conan)
+set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES ${_cmake_conan_SOURCE_DIR}/conan_provider.cmake)
+
 # Add cmake project_options
 # https://github.com/cpp-best-practices/project_options
 message(STATUS "Fetching cmake project options...")
 FetchContent_Declare(_project_options
-        GIT_REPOSITORY https://github.com/aminya/project_options
+        GIT_REPOSITORY https://github.com/cpp-best-practices/project_options
         GIT_TAG origin/main
         GIT_SHALLOW TRUE
         GIT_PROGRESS TRUE)
@@ -89,7 +100,7 @@ project_options(
         # ENABLE_CACHE
         # ENABLE_CPPCHECK
         # ENABLE_CLANG_TIDY
-        ENABLE_CONAN
+        # ENABLE_CONAN
         ENABLE_INTERPROCEDURAL_OPTIMIZATION
         ENABLE_NATIVE_OPTIMIZATION
         ENABLE_DOXYGEN

@@ -22,10 +22,10 @@ double run_symm(const size_t m_size, double const alpha) {
 
   // Test Cycle
   for (size_t j = 0; j < mp::num_iter; j++) {
-    auto start = std::chrono::steady_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
     es.compute(eigen_pei, true);
     avg_sum += std::chrono::duration_cast<mp::microsecond_d>(
-                   std::chrono::steady_clock::now() - start)
+                   std::chrono::high_resolution_clock::now() - start)
                    .count();
 
     volatile Eigen::MatrixXcd evectors = es.eigenvectors();
@@ -41,10 +41,10 @@ double run_inv_symm(const size_t m_size, double const alpha) {
   double avg_sum = 0.0;
   // Test Cycle
   for (size_t j = 0; j < mp::num_iter; j++) {
-    auto start = std::chrono::steady_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
     volatile Eigen::MatrixXd const eigen_pei_inv = eigen_pei.inverse();
     avg_sum += std::chrono::duration_cast<mp::microsecond_d>(
-                   std::chrono::steady_clock::now() - start)
+                   std::chrono::high_resolution_clock::now() - start)
                    .count();
   }
   return avg_sum / mp::num_iter;
@@ -52,11 +52,11 @@ double run_inv_symm(const size_t m_size, double const alpha) {
 
 double run_asymm(const size_t m_size) {
   // Specify the engine and distribution.
-  static thread_local pcg64 engine{
+  pcg64 engine{
       pcg_extras::seed_seq_from<std::random_device>{}};
   std::uniform_real_distribution<double> dist(-1, 1);
 
-  auto gen = [&dist]() { return dist(engine); };
+  auto gen = [&dist, &engine]() { return dist(engine); };
 
   auto const size = static_cast<int64_t>(m_size);
   Eigen::EigenSolver<Eigen::MatrixXd> es;
@@ -66,10 +66,10 @@ double run_asymm(const size_t m_size) {
   for (size_t j = 0; j < mp::num_iter; j++) {
     auto const mat = Eigen::MatrixXd::NullaryExpr(size, size, gen) +
                      Eigen::MatrixXd::Identity(size, size);
-    auto start = std::chrono::steady_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
     es.compute(mat, true);
     avg_sum += std::chrono::duration_cast<mp::microsecond_d>(
-                   std::chrono::steady_clock::now() - start)
+                   std::chrono::high_resolution_clock::now() - start)
                    .count();
 
     volatile Eigen::MatrixXcd evectors = es.eigenvectors();
@@ -80,11 +80,11 @@ double run_asymm(const size_t m_size) {
 
 double run_inv_asymm(const size_t m_size) {
   // Specify the engine and distribution.
-  static thread_local pcg64 engine{
+  pcg64 engine{
       pcg_extras::seed_seq_from<std::random_device>{}};
   std::uniform_real_distribution<double> dist(-1, 1);
 
-  auto gen = [&dist]() { return dist(engine); };
+  auto gen = [&dist, &engine]() -> double { return dist(engine); };
 
   auto const size = static_cast<int64_t>(m_size);
   double avg_sum = 0.0;
@@ -93,10 +93,10 @@ double run_inv_asymm(const size_t m_size) {
   for (size_t j = 0; j < mp::num_iter; j++) {
     Eigen::MatrixXd const mat = Eigen::MatrixXd::NullaryExpr(size, size, gen) +
                                 Eigen::MatrixXd::Identity(size, size);
-    auto start = std::chrono::steady_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
     volatile Eigen::MatrixXd const mat_inv = mat.inverse();
     avg_sum += std::chrono::duration_cast<mp::microsecond_d>(
-                   std::chrono::steady_clock::now() - start)
+                   std::chrono::high_resolution_clock::now() - start)
                    .count();
   }
   return avg_sum / mp::num_iter;

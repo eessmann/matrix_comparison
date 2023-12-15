@@ -74,11 +74,11 @@ double run_inv_symm(const size_t size, const double alpha) {
 
 double run_asymm(const size_t size) {
   // Specify the engine and distribution.
-  static thread_local pcg64 engine{
+  pcg64 engine{
       pcg_extras::seed_seq_from<std::random_device>{}};
   std::uniform_real_distribution<double> dist(-1, 1);
 
-  auto gen = [&dist]() { return dist(engine); };
+  auto gen = [&dist, &engine]() { return dist(engine); };
 
   std::vector<double> data(size * size);
   double avg_sum = 0.0;
@@ -95,10 +95,10 @@ double run_asymm(const size_t size) {
     }
     gsl_matrix_view gsl_pei = gsl_matrix_view_array(data.data(), size, size);
 
-    auto start = std::chrono::steady_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
     gsl_eigen_nonsymmv(&gsl_pei.matrix, eval, evec, wspace);
     avg_sum += std::chrono::duration_cast<mp::microsecond_d>(
-                   std::chrono::steady_clock::now() - start)
+                   std::chrono::high_resolution_clock::now() - start)
                    .count();
   }
   gsl_vector_complex_free(eval);
@@ -109,11 +109,11 @@ double run_asymm(const size_t size) {
 
 double run_inv_asymm(const size_t size) {
   // Specify the engine and distribution.
-  static thread_local pcg64 engine{
+  pcg64 engine{
       pcg_extras::seed_seq_from<std::random_device>{}};
   std::uniform_real_distribution<double> dist(-1, 1);
 
-  auto gen = [&dist]() { return dist(engine); };
+  auto gen = [&dist, &engine]() { return dist(engine); };
 
   std::vector<double> data(size * size);
   double avg_sum = 0.0;
@@ -130,11 +130,11 @@ double run_inv_asymm(const size_t size) {
     }
     gsl_matrix_view gsl_pei = gsl_matrix_view_array(data.data(), size, size);
 
-    auto start = std::chrono::steady_clock::now();
+    auto start = std::chrono::high_resolution_clock::now();
     gsl_linalg_LU_decomp(&gsl_pei.matrix, wspace, &s);
     gsl_linalg_LU_invert(&gsl_pei.matrix, wspace, inv_mat);
     avg_sum += std::chrono::duration_cast<mp::microsecond_d>(
-                   std::chrono::steady_clock::now() - start)
+                   std::chrono::high_resolution_clock::now() - start)
                    .count();
   }
   gsl_matrix_free(inv_mat);

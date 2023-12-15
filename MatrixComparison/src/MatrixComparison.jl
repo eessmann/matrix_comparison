@@ -19,12 +19,15 @@ function generate_plots(fp,pl_title, plot_name)
         sym_data.size,
         Matrix(sym_data[!, Not(:size)]),
         plot_title = pl_title,
-        xlabel = "Matrix size, N",
+        xlabel = "System size, N",
         xaxis = :log10,
+        xticks = [1, 5, 10, 50, 100]
         ylabel = "Time elasped, μs",
         yaxis = :log10,
+        yticks = [1, 10, 100, 1000],
         label = permutedims(labels),
-        legend = :topleft)
+        legend = :topleft,
+        tex_output_standalone = true)
     savefig(plt, plot_name)
     
 end

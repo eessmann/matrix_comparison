@@ -44,7 +44,7 @@ void run_bench(Bench bench, std::filesystem::path const& filename) {
 void symmetric_eigen_bench() {
   std::filesystem::path const sym_file =
       fmt::format("csv_symm_results_{:%Y-%m-%d-%H-%M-%S}.csv",
-                  fmt::localtime(std::chrono::system_clock::now()));
+                  std::chrono::system_clock::now());
 
   auto bench = [](auto size) {
     double arma_time = arma_bench::run_symm(size, 0.4);
@@ -60,9 +60,10 @@ void symmetric_eigen_bench() {
 }
 
 void symmetric_inverse_bench() {
+  std::chrono::time_point<std::chrono::system_clock> current_time = std::chrono::system_clock::now();
   std::filesystem::path const sym_file =
       fmt::format("csv_symm_inv_results_{:%Y-%m-%d-%H-%M-%S}.csv",
-                  fmt::localtime(std::chrono::system_clock::now()));
+                  current_time);
 
   auto bench = [](auto size) {
     double arma_time = arma_bench::run_inv_symm(size, 0.4);
@@ -80,7 +81,7 @@ void symmetric_inverse_bench() {
 void asymmetric_eigen_bench() {
   std::filesystem::path const asym_file =
       fmt::format("csv_asymm_results_{:%Y-%m-%d-%H-%M-%S}.csv",
-                  fmt::localtime(std::chrono::system_clock::now()));
+                  std::chrono::system_clock::now());
 
   auto bench = [](auto size) {
     double arma_time = arma_bench::run_asymm(size);
@@ -98,7 +99,7 @@ void asymmetric_eigen_bench() {
 void asymmetric_inverse_bench() {
   std::filesystem::path const asym_file =
       fmt::format("csv_asymm_inv_results_{:%Y-%m-%d-%H-%M-%S}.csv",
-                  fmt::localtime(std::chrono::system_clock::now()));
+                  std::chrono::system_clock::now());
 
   auto bench = [](auto size) {
     double arma_time = arma_bench::run_inv_asymm(size);
